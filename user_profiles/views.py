@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
-
+from .models import UserProfile
 from .forms import LoginForm, RegistrationForm
 
 # Create your views here.
@@ -51,7 +51,6 @@ def register(request):
 	"""
 	User Registration Form
 	"""
-
 	if(request.method == 'POST'):
 		form = RegistrationForm(data=request.POST)
 		if form.is_valid():

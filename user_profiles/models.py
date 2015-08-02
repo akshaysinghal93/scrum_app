@@ -49,7 +49,10 @@ class UserProfile(AbstractBaseUser , PermissionsMixin):
 		return self.email
 
 	def __str__(self):
-		return self.email
+		return self.full_name
+
+	def __unicode__(self):
+		return self.full_name
 
 	def has_perm(self, perm, obj=None):
 		return True
@@ -63,3 +66,15 @@ class UserProfile(AbstractBaseUser , PermissionsMixin):
 
 	def is_superuser(self):
 		return self.is_admin
+
+	@classmethod
+	def get_users_by_team(self, scrum_team_id=None):
+		userProfileList = UserProfile.objects.order_by('full_name').filter(scrum_team=scrum_team_id)
+		return userProfileList
+
+	@classmethod
+	def change_user_team(self, email, scrum_team=None):
+		user = UserProfile.objects.get(email=email)
+		user.scrum_team = scrum_team
+		user.save()
+		return user

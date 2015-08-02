@@ -31,12 +31,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    #django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #3rd Party Apps
+    'crispy_forms',
+    #scrum-apps
     'user_profiles',
     'scrum_teams',
     'user_stories',
@@ -107,3 +111,16 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user_profiles.UserProfile'
 AUTHENTICATION_BACKENDS = ['user_profiles.user_profile_utilities.UserAuthentication',
 'django.contrib.auth.backends.ModelBackend', ]
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_prod", "static_root")
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static_in_dev", "our_static"),
+    # os.path.join(BASE_DIR, "static_in_prod"),
+    # '/var/www/static/',
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_prod", "media_root")
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

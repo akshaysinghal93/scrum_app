@@ -12,7 +12,7 @@ def updateUserStory(request):
 		if form.is_valid():
 			if request.user.is_admin:
 				new_story = form.save()
-				return render(request, "dashboard.html", {'template_title' : request.user.email})
+				return redirect('/app/dashboard')
 			else:
 				return redirect('/app/login')
 	else:

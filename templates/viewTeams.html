@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block page_title %} Scrum Teams {% endblock %}
+{% block content %}
+<div class="list-group">
+<a href="{% url 'scrum_teams:addNewScrumTeam' %}" class="list-group-item active">Add New</a>
+{% for item in scrum_teams %}
+<a href="/app/teams/edit/{{ item.team_id }}" class="list-group-item">{{ item.team_name }}</a>
+{% endfor %}
+</div>
+{% endblock %}
+

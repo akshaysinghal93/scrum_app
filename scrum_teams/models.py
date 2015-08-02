@@ -7,3 +7,15 @@ class ScrumTeam(models.Model):
 
 	def __unicode__(self):
 		return self.team_name
+
+	@classmethod
+	def get_scrum_teams(self, scrum_team_name=None):
+		if not scrum_team_name:
+			return ScrumTeam.objects.all().order_by('team_name')
+		else:
+			return ScrumTeam.objects.filter(team_name=scrum_team_name)
+
+	@classmethod
+	def get_scrum_team_by_id(self, scrum_team_id=None):
+		return ScrumTeam.objects.get(team_id__exact=scrum_team_id)
+

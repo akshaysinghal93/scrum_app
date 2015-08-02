@@ -1,16 +1,19 @@
 from django import forms
 from .models import ScrumTeam
+from user_profiles.models import UserProfile
 
-class UpdateScrumTeamForm(forms.ModelForm):
+class UpdateScrumTeamForm(forms.Form):
 	"""
 	Form for creating/updating a scrum team
 	"""
 	team_id = forms.CharField(widget=forms.HiddenInput(), initial=-1)
 	team_name = forms.CharField(widget=forms.TextInput, label='Scrum Team Name')
+	# non_members = forms.ModelMultipleChoiceField(queryset=UserProfile.get_users_by_team())
+	# members = forms.ModelMultipleChoiceField(queryset=UserProfile.get_users_by_team())
 
 	class Meta:
 		model = ScrumTeam
-		fields = ['team_id', 'team_name']
+		fields = ['team_id', 'team_name' 'non_members', 'members']
 
 	def clean(self):
 		cleaned_data = super(UpdateScrumTeamForm, self).clean()
@@ -23,9 +26,8 @@ class UpdateScrumTeamForm(forms.ModelForm):
 			team.save()
 		return team
 
-class UpdateTeamMembers(forms.ModelForm):
-	"""
-	Form to add/remove members to scrum team
-	"""
-	team_name = forms.CharField(widget=forms.TextInput)
-		
+# class ViewScrumTeams(forms.ModelForm):
+# 	"""
+# 	Form to add/remove members to scrum team
+# 	"""
+	
