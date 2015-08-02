@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_profiles',
+    'scrum_teams',
+    'user_stories',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,4 +105,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'user_profiles.UserProfile'
-AUTHENTICATION_BACKENDS = ['user_profiles.user_profile_utilities.UserAuthentication', ]
+AUTHENTICATION_BACKENDS = ['user_profiles.user_profile_utilities.UserAuthentication',
+'django.contrib.auth.backends.ModelBackend', ]

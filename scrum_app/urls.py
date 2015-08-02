@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import RedirectView
 
+admin.autodiscover()
 urlpatterns = [
+    url(r'^app/teams/', include('scrum_teams.urls', namespace='scrum_teams')),
+    url(r'^app/stories/', include('user_stories.urls', namespace='user_stories')),
 	url(r'^app/', include('user_profiles.urls', namespace='user_profiles')),
 	url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', RedirectView.as_view(url='/app/dashboard')),
 ]

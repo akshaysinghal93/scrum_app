@@ -32,7 +32,6 @@ class RegistrationForm(forms.ModelForm):
 			user.save()
 		return user
 
-
 class LoginForm(forms.Form):
 	"""
 	Login Form
