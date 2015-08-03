@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block page_title %} User Stories {% endblock %}
+{% block content %}
+<form action="{% url 'user_stories:addUserStory' %}" method="GET" class="form-inline">
+  <div class="form-group">
+    <h2> User Stories </h2>
+  </div>
+  <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 15px">Add New Story</button>
+</form>
+<div class="row">
+  <div class="col-md-12">
+		<table id="storyDetails" class="table table-striped table-bordered">
+  			  <thead>
+        			<td> # </td>
+        			<td> Ref </td>
+        			<td> Story </td>
+        			<td> Description </td>
+              <td> Effort </td>
+              <td> Sprint </td>
+  			  </thead>
+  			  {% for story in userStories %}
+  				  <tr>
+      				<td>{{ forloop.counter }}</td>
+      				<td><a href="/app/stories/edit/{{ story.story_id }}">{{ story.story_ref }}</a></td>		
+              <td>{{ story.story_title }}</td>
+      				<td>{{ story.story_desc }}</td>
+              <td>{{ story.effort_required }}</td>
+              <td>{{ story.sprint }}</td>
+    				</tr>
+			  {% endfor %}
+		</table>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block page_title %} Page Not Found {% endblock %}
+{% block content %}
+	<h1>Oops, you are trying to access an invalid URL, click <a href="{% url 'user_profiles:dashboard' %}">here</a></h1>
+{% endblock %}

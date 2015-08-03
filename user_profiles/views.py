@@ -1,11 +1,22 @@
 from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 from django.contrib.auth import login as django_login, authenticate, logout as django_logout
+from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from .forms import LoginForm, RegistrationForm
 
 # Create your views here.
 
+def handler404(request):
+	return render(request, '404.html')
+
+def handler403(request):
+	return render(request, '403.html')
+
+def handler500(request):
+	return render(request, '500.html')
+
+@login_required(login_url='/app/login/')
 def dashboard(request):
 	"""
 	Dashboard View

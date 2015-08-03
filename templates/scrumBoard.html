@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block page_title %} Board {% endblock %}
+{% block content %}
+<style type="text/css">
+  /* show the move cursor as the user moves the mouse over the panel header.*/
+  .sortable .list-group-item {
+    cursor: move;
+  }
+</style>
+<div class="row">
+  <h2> Scrum Board </h2>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table id="storyDetails" class="table table-striped table-bordered">
+     <thead>
+       <td> # </td>
+       <td> Ref </td>
+       <td> Story </td>
+       <td colspan="3" style="text-align: center"> Status </td>
+     </thead>
+     {% for story in userStories %}
+     <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ story.story_ref }} <br />
+        <a href="/app/stories/tasks/add/{{ story.story_id }}">Add Task</a>
+      </td>		
+      <td>{{ story.story_desc }}</td>
+      <td>
+        <ul class="list-group sortable">
+          <li class="list-group-item drag-disabled">To-Do</li>
+          {% for task in tasks_to_do %}
+            {% if task.story.story_id == story.story_id %}
+            <li class="list-group-item">
+            Id: <a class="task_id" href="#">{{task.task_id}}</a><br />
+            Task: <a href="#">{{task}}</a><br />
+            Description : {{task.task_description}} <br />
+            Status: <a class="status" href="#">{{task.task_status}}</a><br />
+            {% if not task.user %}
+            Assigned To: None
+            <a href="/app/stories/tasks/assign/{{task.task_id}}">Click here to assign</a><br />
+            {% else %}
+            Assigned To: <a href="#">{{task.user}}</a>
+            {% if task.user.email == user.email %}
+            <a href="/app/stories/tasks/unassign/{{task.task_id}}">Unassign
+            </a><br />
+            {% endif %}  
+            {% endif %}
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </td>
+      <td>
+        <ul class="list-group sortable">
+          <li class="list-group-item drag-disabled">In-Progress</li>
+          {% for task in tasks_in_progress %}
+            {% if task.story.story_id == story.story_id %}
+            <li class="list-group-item">
+            Id: <a class="task_id" href="#">{{task.task_id}}</a><br />
+            Task: <a href="#">{{task}}</a><br />
+            Description : {{task.task_description}} <br />
+            Status: <a class="status" href="#">{{task.task_status}}</a><br />
+            {% if not task.user %}
+            Assigned To: None
+            <a href="/app/stories/tasks/assign/{{task.task_id}}">Click here to assign</a><br />
+            {% else %}
+            Assigned To: <a href="#">{{task.user}}</a>
+            {% if task.user.email == user.email %}
+            <a href="/app/stories/tasks/unassign/{{task.task_id}}">Unassign
+            </a><br />
+            {% endif %}  
+            {% endif %}
+            </li>
+            {% endif %}
+          {% endfor %}
+          <ul>
+          </td>
+          <td>
+            <ul class="list-group sortable">
+              <li class="list-group-item drag-disabled">Completed</li>
+              {% for task in tasks_completed %}
+               {% if task.story.story_id == story.story_id %}
+                <li class="list-group-item">
+                Id: <a class="task_id" href="#">{{task.task_id}}</a><br />
+                Task: <a href="#">{{task}}</a><br />
+                Description : {{task.task_description}} <br />
+                Status: <a class="status" href="#">{{task.task_status}}</a><br />
+                {% if not task.user %}
+                Assigned To: None
+                <a href="/app/stories/tasks/assign/{{task.task_id}}">Click here to assign</a><br />
+                {% else %}
+                Assigned To: <a href="#">{{task.user}}</a>
+                {% if task.user.email == user.email %}
+                <a href="/app/stories/tasks/unassign/{{task.task_id}}">Unassign
+                </a><br />
+                {% endif %}  
+                {% endif %}
+                </li>
+               {% endif %}
+              {% endfor %}
+            </ul>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+  <script>
+    $(function() {
+      $( ".sortable" ).sortable();
+      $( ".sortable" ).disableSelection();
+    });
+
+    $(function() {
+      var oldList, newList, item;
+      $('.sortable').sortable({
+        items: "li:not(.drag-disabled)",
+             cancel: ".drag-disabled",
+            start: function(event, ui) {
+              item = ui.item;
+              newList = oldList = ui.item.parent().parent();
+            },
+            stop: function(event, ui) {
+              var taskId=item.find('.task_id').text();
+              var to_status=item.siblings('.drag-disabled').text();
+              $.ajax({
+                url: "{% url 'tasks:changeStatus' %}",
+                type: 'post',
+                datatype: 'json',
+                data: {
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  task_id: taskId,
+                  status: to_status
+                },
+                success: function(response) {
+                  if(response == 'success'){
+                    item.find('.status').text(to_status)
+                    alert('Success')
+                  }else{
+                    alert('Cannot change status of task. You may not have the permissions')
+                    location.reload();
+                  }
+
+
+                }
+              })
+
+            },
+            change: function(event, ui) {  
+              if(ui.sender) newList = ui.placeholder.parent().parent();
+            },
+            connectWith: ".sortable"
+          }).disableSelection();
+});
+</script>
+{% endblock %}

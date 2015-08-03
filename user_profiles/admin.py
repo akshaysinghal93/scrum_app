@@ -15,7 +15,7 @@ class UserProfileCreationForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('email', 'full_name', 'scrum_team')
+		fields = ('email', 'full_name')
 
 	def clean_password2(self):
 		# Check that the two password entries match
@@ -42,7 +42,7 @@ class UserProfileEditForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ('email', 'password', 'full_name' , 'is_admin' ,'is_active' ,'scrum_team')
+		fields = ('email', 'password', 'full_name' , 'is_admin' ,'is_active')
 
 	def clean_password(self):
 		return self.initial["password"]
@@ -59,7 +59,7 @@ class UserProfileAdmin(UserAdmin):
 	list_filter = ('is_admin',)
 	fieldsets = (
 		(None, {'fields': ('email', 'password')}),
-		('Personal info', {'fields': ('full_name', 'scrum_team',)}),
+		('Personal info', {'fields': ('full_name',)}),
 		('Permissions', {'fields': ('is_admin',)}),
 		# ('Important dates', {'fields': ('last_login',)}),
 	)

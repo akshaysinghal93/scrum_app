@@ -8,12 +8,11 @@ class UpdateScrumTeamForm(forms.Form):
 	"""
 	team_id = forms.CharField(widget=forms.HiddenInput(), initial=-1)
 	team_name = forms.CharField(widget=forms.TextInput, label='Scrum Team Name')
-	# non_members = forms.ModelMultipleChoiceField(queryset=UserProfile.get_users_by_team())
-	# members = forms.ModelMultipleChoiceField(queryset=UserProfile.get_users_by_team())
+
 
 	class Meta:
 		model = ScrumTeam
-		fields = ['team_id', 'team_name' 'non_members', 'members']
+		fields = ['team_id', 'team_name']
 
 	def clean(self):
 		cleaned_data = super(UpdateScrumTeamForm, self).clean()

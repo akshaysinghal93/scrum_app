@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from scrum_teams.models import ScrumTeam
+# from scrum_teams.models import ScrumTeam
 # Create your models here.
 
 class UserProfileManager(BaseUserManager):
@@ -33,7 +33,7 @@ class UserProfile(AbstractBaseUser , PermissionsMixin):
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
-	scrum_team = models.ForeignKey(ScrumTeam, null=True)
+	# scrum_team = models.ForeignKey(ScrumTeam, null=True)
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['full_name']
@@ -67,14 +67,17 @@ class UserProfile(AbstractBaseUser , PermissionsMixin):
 	def is_superuser(self):
 		return self.is_admin
 
-	@classmethod
-	def get_users_by_team(self, scrum_team_id=None):
-		userProfileList = UserProfile.objects.order_by('full_name').filter(scrum_team=scrum_team_id)
-		return userProfileList
+	# @classmethod
+	# def get_users_by_id(self, scrum_team_id=None):
+	# 	if not scrum_team_id:
+	# 		userProfileList = UserProfile.objects.order_by('full_name').all()
+	# 		return userProfileList
+	# 	userProfileList = UserProfile.objects.order_by('full_name').filter(scrum_team=scrum_team_id)
+	# 	return userProfileList
 
-	@classmethod
-	def change_user_team(self, email, scrum_team=None):
-		user = UserProfile.objects.get(email=email)
-		user.scrum_team = scrum_team
-		user.save()
-		return user
+	# @classmethod
+	# def change_user_team(self, email, scrum_team=None):
+	# 	user = UserProfile.objects.get(email=email)
+	# 	user.scrum_team = scrum_team
+	# 	user.save()
+	# 	return user

@@ -25,7 +25,7 @@ SECRET_KEY = '9@82)0w0ej-d!1%rg612*n39*(29%6-nkje5y15nf0!5!k@)@@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,8 +42,10 @@ INSTALLED_APPS = (
     'crispy_forms',
     #scrum-apps
     'user_profiles',
-    'scrum_teams',
+    #'scrum_teams',
     'user_stories',
+    'sprint',
+    'tasks',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -124,3 +126,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_prod", "media_root")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+APPEND_SLASH = 'True'
