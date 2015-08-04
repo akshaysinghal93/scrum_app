@@ -13,11 +13,8 @@ def addNewSprint(request):
 	if(request.method == 'POST'):
 		form = AddSprintForm(data=request.POST)
 		if form.is_valid():
-			if request.user.is_admin:
-				form.save()
-				return redirect('/app/sprint/view')
-			else:
-				return redirect('/app/login')
+			form.save()
+			return redirect('/app/sprint/view')
 	else:
 			form = AddSprintForm()
 	return render_to_response('addUpdateSprint.html', {
