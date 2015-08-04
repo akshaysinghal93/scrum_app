@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '9@82)0w0ej-d!1%rg612*n39*(29%6-nkje5y15nf0!5!k@)@@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -108,11 +108,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+
 
 AUTH_USER_MODEL = 'user_profiles.UserProfile'
 AUTHENTICATION_BACKENDS = ['user_profiles.user_profile_utilities.UserAuthentication',
 'django.contrib.auth.backends.ModelBackend', ]
+
+STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_prod", "static_root")
 

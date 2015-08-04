@@ -16,21 +16,6 @@ def handler403(request):
 def handler500(request):
 	return render(request, '500.html')
 
-@login_required(login_url='/app/login/')
-def dashboard(request):
-	"""
-	Dashboard View
-	"""
-	if request.user.is_authenticated():
-		title = "Welcome %s !" %(request.user)
-		context = {
-			"template_title": title
-		}
-		return render(request, "dashboard.html", context)
-	else:
-		return redirect('/app/login')
-
-
 def login(request):
 	"""
 	Login View

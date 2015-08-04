@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from .forms import UpdateUserStoryForm
 from .models import UserStory
-from tasks	.models import Task
+from tasks.models import Task
+from sprint.models import Sprint
 # Create your views here.
 
 
@@ -77,7 +78,16 @@ def getScrumBoard(request):
 	"""
 	View All User Stories
 	"""
-	userStories = UserStory.objects.all()
+	if (request.method == 'GET'):
+		try:
+			sprint_id = request.GET.get('sprint_id')
+			sprint=Sprint.objects.get(sprint_id=sprint_id)
+			selected_sprint = sprint.sprint_name
+		except:
+			sprint = None
+			selected_sprint = ""
+	userStories = UserStory.objects.filter(sprint=sprint)
+	print "userStories %s" % userStories
 	tasks_to_do = Task.objects.filter(task_status='To-Do')
 	tasks_in_progress = Task.objects.filter(task_status='In-Progress')
 	tasks_completed = Task.objects.filter(task_status='Completed')
@@ -85,5 +95,7 @@ def getScrumBoard(request):
 		'userStories' : userStories,
 		'tasks_to_do' : tasks_to_do,
 		'tasks_in_progress' : tasks_in_progress,
-		'tasks_completed' : tasks_completed
+		'selected_sprint' : selected_sprint,
+		'tasks_completed' : tasks_completed,
+		'sprints' : Sprint.objects.all()
 	}, context_instance=RequestContext(request))

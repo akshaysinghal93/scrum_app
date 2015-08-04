@@ -11,6 +11,26 @@ import json
 # Create your views here.
 
 @login_required(login_url='/app/login/')
+def dashboard(request):
+	"""
+	Dashboard View
+	"""
+	if request.user.is_authenticated():
+		title = "Welcome %s !" %(request.user)
+		user_tasks_to_do = Task.objects.filter(user=request.user).filter(task_status='To-Do')
+		user_tasks_in_progress = Task.objects.filter(user=request.user).filter(task_status='In-Progress')
+		user_tasks_completed = Task.objects.filter(user=request.user).filter(task_status='Completed')
+		context = {
+			"template_title": title,
+			'user_tasks_to_do': user_tasks_to_do,
+			'user_tasks_in_progress': user_tasks_in_progress,
+			'user_tasks_completed': user_tasks_completed
+		}
+		return render(request, "dashboard.html", context)
+	else:
+		return redirect('/app/login')
+
+@login_required(login_url='/app/login/')
 def createNewTask(request, story_id=None):
 	"""
 	Function to create new task
@@ -25,10 +45,12 @@ def createNewTask(request, story_id=None):
 			task = Task(task_name=task_name, task_description=task_description,
 				task_status=task_status, story=story)
 			task.save()
-			return redirect('/app/stories/view')
+			return redirect('/app/stories/board')
 		else:
 			print "Operation Failed"
-			return redirect('/app/stories/view')
+			return render_to_response('createNewTask.html', {
+				'form' : form,
+				}, context_instance=RequestContext(request))
 	else:
 		form = CreateTaskForm()
 		return render_to_response('createNewTask.html', {

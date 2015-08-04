@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
+	url(r'^$', 'tasks.views.dashboard', name='dashboard'),
 	url(r'^add/(?P<story_id>[0-9]+)/$', 
 		'tasks.views.createNewTask', name='createNewTask'),
 	url(r'^assign/(?P<task_id>[0-9]+)/$', 

@@ -22,12 +22,14 @@ from django.conf import settings
 admin.autodiscover()
 urlpatterns = [
     # url(r'^app/teams/', include('scrum_teams.urls', namespace='scrum_teams')),
+    url(r'^app/dashboard/', include('tasks.urls', namespace='tasks')),
     url(r'^app/stories/tasks/', include('tasks.urls', namespace='tasks')),
     url(r'^app/stories/', include('user_stories.urls', namespace='user_stories')),
     url(r'^app/sprint/', include('sprint.urls', namespace='sprint')),
+    
 	url(r'^app/', include('user_profiles.urls', namespace='user_profiles')),
-	url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', RedirectView.as_view(url='/app/dashboard')),
+	#url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', RedirectView.as_view(url='/app/dashboard/')),
 ]
 handler404 = 'user_profiles.views.handler404'
 handler403 = 'user_profiles.views.handler403'

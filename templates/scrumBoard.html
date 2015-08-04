@@ -8,9 +8,19 @@
     cursor: move;
   }
 </style>
-<div class="row">
-  <h2> Scrum Board </h2>
-</div>
+<form class="form-inline">
+  <div class="form-group">
+    <h2> Scrum Board - {{selected_sprint}}</h2>
+  </div>
+  <div class="form-group" style="margin-top: 10px">
+    <select id="selectedSprint" class="combobox input-sm form-control" name="normal">
+      <option value="" selected="selected">--Select Sprint to Add--</option>
+        {% for sprint in sprints %}
+          <option value='{{ sprint.sprint_id }}'>{{ sprint.sprint_name }}</option>
+        {% endfor %}
+    </select>
+ </div>
+</form>
 <div class="row">
   <div class="col-md-12">
     <table id="storyDetails" class="table table-striped table-bordered">
@@ -36,6 +46,7 @@
             Id: <a class="task_id" href="#">{{task.task_id}}</a><br />
             Task: <a href="#">{{task}}</a><br />
             Description : {{task.task_description}} <br />
+            Effort : {{task.effort_required}} <br />
             Status: <a class="status" href="#">{{task.task_status}}</a><br />
             {% if not task.user %}
             Assigned To: None
@@ -61,6 +72,7 @@
             Id: <a class="task_id" href="#">{{task.task_id}}</a><br />
             Task: <a href="#">{{task}}</a><br />
             Description : {{task.task_description}} <br />
+            Effort : {{task.effort_required}} <br />
             Status: <a class="status" href="#">{{task.task_status}}</a><br />
             {% if not task.user %}
             Assigned To: None
@@ -86,6 +98,7 @@
                 Id: <a class="task_id" href="#">{{task.task_id}}</a><br />
                 Task: <a href="#">{{task}}</a><br />
                 Description : {{task.task_description}} <br />
+                Effort : {{task.effort_required}} <br />
                 Status: <a class="status" href="#">{{task.task_status}}</a><br />
                 {% if not task.user %}
                 Assigned To: None
@@ -108,6 +121,18 @@
     </div>
   </div>
   <script>
+    $(document).ready(function(){
+      $('.combobox').combobox();
+       $("#selectedSprint").change(function () {
+            var oldId = '{{selected_sprint}}';
+            var newId = $(this).val();
+            if(oldId != newId){
+              //$.get();
+              window.location = ("{% url 'user_stories:getScrumBoard' %}"+"?sprint_id="+newId)
+            }
+        });
+
+    });
     $(function() {
       $( ".sortable" ).sortable();
       $( ".sortable" ).disableSelection();
@@ -137,7 +162,7 @@
                 success: function(response) {
                   if(response == 'success'){
                     item.find('.status').text(to_status)
-                    alert('Success')
+                    // alert('Success')
                   }else{
                     alert('Cannot change status of task. You may not have the permissions')
                     location.reload();
